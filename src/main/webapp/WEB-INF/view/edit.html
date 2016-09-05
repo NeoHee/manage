@@ -1,0 +1,166 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$title}</title>
+<link href="css/style.css" rel="stylesheet"/>
+<script src="css/jquery.js" language="javascript"></script>
+<script src="css/from.js" language="javascript"></script>
+<script src="css/editText/kindeditor.js" language="javascript"></script>
+<script src="css/main.js" language="javascript"></script>
+
+<style>
+	.role_block{ margin-bottom:20px; border:#e2e2e2 solid 1px; padding:10px 10px; margin-right:10px;}
+	.role_block div{ font-weight:bold; margin-bottom:10px; }
+	label{ cursor:pointer; }
+</style>
+<body>
+	
+<script language="javascript">
+		editor('#content');
+</script>
+<div class="tools">
+    <div class="hr">
+        <div class="ico" style="background-position:-80px 0; margin-top:3px" ></div>            
+        <a class="f" style="margin:4px 0 0 0;" href="index.php?file=authority&act=add">添加管理员</a>            
+    </div>
+</div>
+<div class="table tableedit">
+    <form id="form" method="post" action="index.php?file=product&act=submit&power=p6" enctype="multipart/form-data">
+    <table width="100%" cellspacing="0">
+        <tr>
+            <td width="100" class="textR">书籍标题：</td>
+            <td class="textL">
+            <input type="text" class="text" size="30" datatype="empty" name="book_title" value="{$product.book_title}"/>
+            &nbsp;*&nbsp;<label></label>
+            </td>
+	</tr>
+        <tr>
+            <td class="textR">类别：</td>
+            <td class="textL">
+            	<select name="book_sort">                	
+						<option value="1" selected="selected">类别一</option>
+            	</select>
+            </td>
+         </tr>
+         <tr>
+            <td width="100" class="textR">现价：</td>
+            <td class="textL">
+            <input type="text" class="text" size="30" datatype="empty" name="book_price" value="{$product.book_from}"/>
+            &nbsp;*&nbsp;<label></label>
+            </td>
+		</tr>
+        <tr>
+            <td width="100" class="textR">市场价：</td>
+            <td class="textL">
+            <input type="text" class="text" size="30" datatype="empty" name="book_price" value="{$product.book_price_old}"/>
+            &nbsp;*&nbsp;<label></label>
+            </td>
+		</tr>
+        <tr>
+            <td width="100" class="textR">书店名：</td>
+            <td class="textL">
+            <input type="text" class="text" size="30" datatype="empty" name="book_shop_name" value="{$product.book_shop_name}"/>
+            &nbsp;*&nbsp;<label></label>
+            </td>
+		</tr>
+        <tr>
+            <td width="100" class="textR">书店地址：</td>
+            <td class="textL">
+            <input type="text" class="text" size="30" datatype="empty" name="book_shop_url" value="{$product.book_shop_url}"/>
+            &nbsp;*&nbsp;<label></label>
+            </td>
+		</tr>
+        <tr>
+            <td width="100" class="textR">作者：</td>
+            <td class="textL">
+            <input type="text" class="text" size="30" datatype="empty" name="book_author" value="{$product.book_author}"/>
+            &nbsp;*&nbsp;<label></label>
+            </td>
+		</tr>
+         <tr>
+            <td width="100" class="textR">书籍出版社：</td>
+            <td class="textL">
+            <input type="text" class="text" size="30" datatype="empty" name="book_from" value="{$product.book_from}"/>
+            &nbsp;*&nbsp;<label></label>
+            </td>
+		</tr>
+        <tr>
+            <td width="100" class="textR">开本：</td>
+            <td class="textL">
+            <input type="text" class="text" size="30" datatype="empty" name="book_size" value="{$product.book_size}"/>
+            &nbsp;*&nbsp;<label></label>
+            </td>
+		</tr>
+        <tr>
+            <td width="100" class="textR">出版时间：</td>
+            <td class="textL">
+            <input type="text" class="text" size="30" datatype="empty" name="book_time" value="{$product.book_time}"/>
+            &nbsp;*&nbsp;<label></label>
+            </td>
+		</tr>
+         <tr>
+            <td class="textR">是否展示：</td>
+            <td class="textL">
+				<select name="is_show">
+                	<option value="0">否</option>
+                    <option value="1"{if $product.is_show==1} selected {/if}>是</option>
+                </select>
+            </td>
+         </tr> 
+         <tr>
+            <td class="textR">排序：</td>
+            <td class="textL">
+				<input type="text" value="{$product.book_rank}" name="book_rank"/>
+            </td>
+         </tr> 
+         <tr>
+            <td class="textR">在首页显示：</td>
+            <td class="textL">
+				<select name="is_top">
+                	<option value="0">否</option>
+                    <option value="1"{if $product.is_top==1} selected {/if}>是</option>
+                </select>
+            </td>
+         </tr>
+        
+         <tr>
+            <td class="textR">预览图片：</td>
+            <td class="textL" style="padding:10px 0">
+            	<img src="../upfile/{$product.smallimg}" width="120" id="img"/>
+                <input type="button" class="button" value="选择图片" onClick="PhotoGallery.custom=custom;PhotoGallery.show()"/>
+                <input type="hidden" value="{$product.book_img}" name="book_img" id="smallimg"/>
+            </td>
+         </tr>
+         <tr>
+            <td class="textR">内容摘要：</td>
+            <td class="textL">
+            	<textarea id="content" name="book_content" style="width:80%; height:400px;" datatype="empty">{$product.book_content}</textarea>
+            </td>
+         </tr>         
+         <tr>
+         	<td class="textR">&nbsp;</td>
+            <td class="textL">
+            	<input type="button" class="button" value="修改" datatype="submit" onMouseOver="EditorUpdate()"/>
+                <input type="hidden" name="id" value="{$product.id}"/>
+            </td>
+         </tr>
+    </table>
+    </form>
+    </div>
+<script>
+	new Form('form');
+	function showimg(url){
+		document.getElementById('img').src="../upfile/"+url+"?"+Math.random();
+	}
+	function custom(str){
+		$('#img').attr('src','../upfile/'+str);
+		$('#smallimg').val(str);
+	}
+</script>
+
+
+   
+</body>
+</html>
+

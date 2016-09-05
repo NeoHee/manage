@@ -1,0 +1,169 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$title}</title>
+<link href="css/style.css" rel="stylesheet"/>
+<script src="css/jquery.js" language="javascript"></script>
+<script src="css/from.js" language="javascript"></script>
+<script src="css/editText/kindeditor.js" language="javascript"></script>
+<script src="css/main.js" language="javascript"></script>
+
+<style>
+	.role_block{ margin-bottom:20px; border:#e2e2e2 solid 1px; padding:10px 10px; margin-right:10px;}
+	.role_block div{ font-weight:bold; margin-bottom:10px; }
+	label{ cursor:pointer; }
+</style>
+<body>
+	<div class="tools">
+        <div class="hr">
+            <div class="ico" style="background-position:-80px 0; margin-top:3px" ></div>            
+            <a class="f" style="margin:4px 0 0 0;" href="index.php?file=authority&act=add">添加管理员</a>            
+        </div>
+    </div>
+    
+    
+	<!--管理员列表-->
+    <table class="table" cellspacing="0" width="100%">
+    	<thead>
+        	<tr class="h">
+        		<td width="60">编号</td>
+                <td>管理员</td>
+                <td width="160">操作</td>
+            </tr>
+        </thead>
+        <tbody>			
+				<tr>
+					<td>1</td>
+					<td style="text-align:left">
+						<a href="edit.html">admin</a>
+					</td>
+					<td>
+						<a class="edit" href="edit.html"><img src="images/ET_ico1.gif"/>编辑</a>
+						<a class="edit" href="#" onClick="del(1)"><img src="images/ET_ico2.gif"/>删除</a>
+					</td>
+				</tr>
+        </tbody>
+        <tfoot>
+        	 <tr class="h">
+        		<td colspan="3">
+                    <div style="float:right; line-height:22px; margin-right:20px;" class="foot">
+	                    <a href="index.php?file={$padingFile}&act={$padingAct}&num={$padingBack}&parentsort={$parentsort}">上一页</a>
+				  		<span>1</span>      
+				      	<a href="index.php?file={$padingFile}&act={$padingAct}&num={$a}&parentsort={$parentsort}">2</a>      
+						<a href="index.php?file={$padingFile}&act={$padingAct}&num={$padingNext}&parentsort={$parentsort}">下一页</a>
+						&nbsp;&nbsp;&nbsp;总计22条记录&nbsp;&nbsp;当前第1页&nbsp;&nbsp;共5页
+                    </div>
+                </td>
+             </tr>
+        </tfoot>
+    </table>
+	<script>
+	function del(id){
+		$.ajax({
+			type:'post',
+			url:"index.php?file=authority&act=del",
+			data:"id="+id,
+			success:function(e){
+				e=e.replace(/\s/g,''); 
+				if(e==1){					
+					alert('删除成功');
+					location.href=url;
+				}else{
+					alert('删除失败');
+				}
+			}
+		})	
+	}
+   </script>
+
+	
+   <!-- 
+    {if $act=="edit"}
+    <div class="table t2">
+    <form id="form" method="post" action="index.php?file=authority&act=submit">
+    <table width="100%" cellspacing="0" style="margin:20px 0 0 0" class="table tableedit">
+        <tr>
+            <td width="100" style="height:50px;" class="textR">管理员：</td>
+            <td class="textL">
+            <input type="text" class="text" size="30" datatype="empty" name="username" value="{$result.username}"/>
+            &nbsp;*&nbsp;<label></label>
+            </td>
+        </tr>       
+        <tr>
+            <td class="textR" >权限设置：</td>
+            <td class="textL" id="role" style="padding-top:10px;">
+            	{foreach from=$power item=a}
+            		<div class="role_block">
+            		{section loop=$a name=b}
+            			{if $smarty.section.b.first}            				
+            				<div>
+            					<input type="checkbox" value="{$a[b][0]}" id="{$a[b][0]}_0" onClick="selectall(this)" {if $editself==0}disabled='disabled'{/if}/>
+            					<label for="{$a[b][0]}_0">{$a[b][1]}</label>
+            				</div>
+            			{else} 
+            			<input type="checkbox" value="{$a[b][0]}" id="{$a[b][0]}" onClick="selected(this)" class="power" {if $editself==0}disabled='disabled'{/if}/>
+            			<label for="{$a[b][0]}">{$a[b][1]}</label>
+            			{/if}
+            		{/section}</div>
+            	{/foreach}
+            </td>
+         </tr>
+         <tr>
+         	<td class="textR">&nbsp;</td>
+            <td>
+            	<input value="{$result.id}" type="hidden" name='id'/>
+            	<input value="{$result.permissio}" type="hidden" name='permissio' id="permissio"/>
+            	<input type="button" class="button submit" value="修改" datatype="submit"/>
+            </td>
+         </tr>
+    </table>
+    </form>
+    </div>
+   	 <script>
+   	 	new Form('form');
+		var roles="{$result.permissio}";
+		var user="{$result.id}";
+
+		$('#role input').click(function(){
+			str="";
+			$('.power:checked').each(function(){
+				str+=$(this).val()+",";
+			});
+			str=str.substr(0,str.length-1);
+			$('#permissio').val(str);
+		});
+		
+		if(roles=="all" || user=="1"){
+			$('#role input').attr('checked',"checked");
+			if(user=="1")$('#role input').attr('disabled',"disabled");
+			$('.submit').attr('disabled',true);
+		}else{
+			roles=roles.split(',');
+			for(i=0;i<roles.length;i++){
+				$('#'+roles[i]).attr('checked',"checked");
+				$('#'+roles[i]).parent().find('input').eq(0).attr('checked',"checked");;
+			}
+		}
+		
+		function selected(obj){
+			obj=$(obj);
+			if(obj.attr('checked')){
+				obj.parent().find('input').eq(0).attr('checked',"checked");
+			}else{
+				if(obj.parent().find('input:checked').length<2){
+					obj.parent().find('input').eq(0).attr('checked',false);	
+				}
+			}
+		}
+		function selectall(obj){
+			obj=$(obj).parent().parent();
+			obj.find('input').attr('checked',"checked");			
+		}
+	</script>
+    {/if}
+
+	-->
+</body>
+</html>
+
